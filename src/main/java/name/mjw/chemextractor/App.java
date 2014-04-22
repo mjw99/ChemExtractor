@@ -15,29 +15,46 @@ import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.FormatType;
 import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.ResolvedNamedEntity;
 
 public class App {
-	PDDocument doc = null;
+	PDDocument doc = null ;
+	Oscar oscar = null;
 
+	
+	App(){
+		 oscar = new Oscar();
+	}
+	
 	public void main(String[] args) throws IOException {
 
 	}
 
-	public void processStringWithOscar(String s) {
+	public void processStringWithOscarToObtainInchi(String s) {
 
-		// String s = "Benzene, Phenol, water";
-
-		Oscar oscar = new Oscar();
-		List<ResolvedNamedEntity> entities = oscar
-				.findAndResolveNamedEntities(s);
+		
+		List<ResolvedNamedEntity> entities = oscar.findAndResolveNamedEntities(s);
 		for (ResolvedNamedEntity ne : entities) {
-			System.out.println(ne.getSurface());
-			ChemicalStructure inchi = ne
-					.getFirstChemicalStructure(FormatType.INCHI);
+			//System.out.println(ne.getSurface());
+			ChemicalStructure inchi = ne.getFirstChemicalStructure(FormatType.INCHI);
+								
 			if (inchi != null) {
-				System.out.println(inchi);
+				System.out.println(ne.getSurface() + "\t\t\t" + inchi );
 			}
-			System.out.println();
+			
 		}
 	}
+	
+	public void processStringWithOscarToObtainCML(String s) {
+
+		List<ResolvedNamedEntity> entities = oscar.findAndResolveNamedEntities(s);
+		for (ResolvedNamedEntity ne : entities) {
+
+			ChemicalStructure cml = ne.getFirstChemicalStructure(FormatType.CML);
+			if (cml != null) {
+				System.out.println(cml);
+			}
+
+		}
+	}
+	
 
 	public void processPDFfromStream(FileInputStream input) {
 
@@ -57,7 +74,14 @@ public class App {
 		}
 
 		try {
-			String text = stripper.getText(doc);
+			String hyphenatedText = stripper.getText(doc);
+
+			//A hack
+			
+			String text = hyphenatedText.replaceAll("-\r\n", "");
+			
+			processStringWithOscarToObtainInchi(text);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,11 +89,13 @@ public class App {
 
 	}
 
-	public FileInputStream processPDFfromStream(String fileName) {
+	public FileInputStream processPDFfromFileName(String fileName) {
 		File file = new File(fileName);
 		FileInputStream is = null;
+
 		try {
 			is = new FileInputStream(file);
+			processPDFfromStream(is);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
