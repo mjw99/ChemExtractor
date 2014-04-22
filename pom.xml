@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>chemextractor</name>
-	<url>http://maven.apache.org</url>
+	<url>https://bitbucket.org/mjw99/chemextractor</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,6 +17,8 @@
 		<junit.version>4.11</junit.version>
 		<pdfbox.version>1.8.4</pdfbox.version>
 		<oscar.version>4.1.2</oscar.version>
+		<org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
+		
 	</properties>
 
 	<developers>
@@ -94,6 +96,12 @@
 			<groupId>uk.ac.cam.ch.wwmm.oscar</groupId>
 			<artifactId>oscar4-api</artifactId>
 			<version>${oscar.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.directory.studio</groupId>
+			<artifactId>org.apache.commons.codec</artifactId>
+			<version>${org.apache.commons.codec.version}</version>
 		</dependency>
 	</dependencies>
 </project>
