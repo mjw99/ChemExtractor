@@ -40,15 +40,24 @@ public class OscarPDF2JSON {
 	List<ResolvedNamedEntity> entities = null;
 
 	
-	OscarPDF2JSON() {
+	public OscarPDF2JSON() {
 		oscar = new Oscar();
 	}
 
-	OscarPDF2JSON(String pdfFileName) {
+	public OscarPDF2JSON(String pdfFileName) {
 		oscar = new Oscar();
 		
 		// Pull only the text out of a PDF as a String
 		extractTextfromPDFFileName(pdfFileName);
+		
+		// Process the text string with OSCAR
+		generateEntities();
+	}
+	
+	public OscarPDF2JSON(FileInputStream is) {
+		oscar = new Oscar();
+
+		extractTextfromPDFStream(is);
 		
 		// Process the text string with OSCAR
 		generateEntities();
@@ -82,13 +91,7 @@ public class OscarPDF2JSON {
 				ChemicalDatum cd = new ChemicalDatum();
 
 				cd.setName(ne.getSurface());
-				cd.setInchi(inchi.toString());
-
-				// ChemicalStructure cml =
-				// ne.getFirstChemicalStructure(FormatType.CML);
-				// if (cml != null){
-				// cd.setCml(cml.toString());
-				// }
+				cd.setInchi(inchi.getValue());
 
 				chemicalData.put(ne.getSurface(), cd);
 			}
@@ -112,7 +115,8 @@ public class OscarPDF2JSON {
 
 			if (inchi != null) {
 
-				System.out.println(inchi);
+				System.out.println(inchi.getValue());
+
 			}
 
 		}

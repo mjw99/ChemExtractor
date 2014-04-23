@@ -9,6 +9,7 @@
 
 	<name>chemextractor</name>
 	<url>https://bitbucket.org/mjw99/chemextractor</url>
+	<description>chemextractor is an OSCAR4 wrapper for extracting chemical data from PDFs in a JSON format.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,8 +18,10 @@
 		<junit.version>4.11</junit.version>
 		<pdfbox.version>1.8.4</pdfbox.version>
 		<oscar.version>4.1.2</oscar.version>
-		<org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
+		<codec.version>1.8</codec.version>
 		<gson.version>2.2.4</gson.version>
+		<joptsimple.version>4.6</joptsimple.version>
+		<jdeb.version>1.1.1</jdeb.version>
 
 	</properties>
 
@@ -67,6 +70,97 @@
 
 			</plugin>
 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.8</version>
+				<configuration>
+					<platforms>
+						<platform>unix</platform>
+					</platforms>
+
+					<programs>
+						<program>
+							<mainClass>name.mjw.chemextractor.OscarPDF2JSONCli</mainClass>
+							<id>oscarpdf2json</id>
+						</program>
+					</programs>
+
+					<!-- Prevent long directories -->
+					<repositoryLayout>flat</repositoryLayout>
+					<!-- Tell appassembler that src/main/resources is the new src/main/config -->
+					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+					<!-- Bring across log4j.properties; without this log4j spews everything 
+						at runtime -->
+					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptor>src/main/assembly/bin.xml</descriptor>
+
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!--Tool for building a Debian package (.deb) http://tech.ebuddy.com/2013/10/02/automating-debian-package-creation-and-management-with-mavenant/ 
+					https://github.com/brndkfr/xmppbot/blob/master/xmppbot/pom.xml -->
+				<artifactId>jdeb</artifactId>
+				<groupId>org.vafer</groupId>
+				<version>${jdeb.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jdeb</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<dataSet>
+						<data>
+							<src>${project.build.directory}/appassembler/</src>
+							<type>directory</type>
+							<mapper>
+								<type>perm</type>
+								<filemode>555</filemode>
+								<prefix>/usr/share/chemextractor-repo</prefix>
+							</mapper>
+						</data>
+
+						<data>
+							<type>link</type>
+							<symlink>true</symlink>
+							<linkName>/usr/bin/oscarpdf2json</linkName>
+							<linkTarget>/usr/share/chemextractor-repo/bin/oscarpdf2json</linkTarget>
+						</data>
+
+					</dataSet>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
@@ -102,13 +196,27 @@
 		<dependency>
 			<groupId>org.apache.directory.studio</groupId>
 			<artifactId>org.apache.commons.codec</artifactId>
-			<version>${org.apache.commons.codec.version}</version>
+			<version>${codec.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>${gson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jopt-simple</groupId>
+			<artifactId>jopt-simple</artifactId>
+			<version>${joptsimple.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vafer</groupId>
+			<artifactId>jdeb</artifactId>
+			<version>${jdeb.version}</version>
+			<!-- Prevents jar bloat in final package -->
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

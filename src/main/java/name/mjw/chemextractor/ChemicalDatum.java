@@ -1,10 +1,14 @@
 package name.mjw.chemextractor;
 
-public class ChemicalDatum {
+import net.sf.jniinchi.JniInchiException;
+import net.sf.jniinchi.JniInchiOutputKey;
+import net.sf.jniinchi.JniInchiWrapper;
 
+public class ChemicalDatum {
 
 	private String name;
 	private String inchi;
+	private String inchiKey;
 	private String cml;
 
 	public String getName() {
@@ -21,6 +25,18 @@ public class ChemicalDatum {
 
 	public void setInchi(String inchi) {
 		this.inchi = inchi;
+
+		JniInchiOutputKey key = null;
+
+		try {
+			key = JniInchiWrapper.getInchiKey(inchi);
+		} catch (JniInchiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		inchiKey = key.getKey();
+
 	}
 
 	public String getCml() {
@@ -29,6 +45,11 @@ public class ChemicalDatum {
 
 	public void setCml(String cml) {
 		this.cml = cml;
+	}
+
+	public String getInchiKey() {
+
+		return inchiKey;
 	}
 
 }
