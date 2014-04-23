@@ -18,7 +18,8 @@
 		<pdfbox.version>1.8.4</pdfbox.version>
 		<oscar.version>4.1.2</oscar.version>
 		<org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
-		
+		<gson.version>2.2.4</gson.version>
+
 	</properties>
 
 	<developers>
@@ -102,6 +103,12 @@
 			<groupId>org.apache.directory.studio</groupId>
 			<artifactId>org.apache.commons.codec</artifactId>
 			<version>${org.apache.commons.codec.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
 		</dependency>
 	</dependencies>
 </project>
