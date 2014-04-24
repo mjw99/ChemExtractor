@@ -65,8 +65,7 @@ public class ChemicalDatum {
 
 			JniInchiInputInchi jniInchiInputInchi = new JniInchiInputInchi(inchi);
 			JniInchiOutputStructure jniInchiOutputStructure = JniInchiWrapper.getStructureFromInchi(jniInchiInputInchi);
-			JniInchiStructure jniInchiStructure =  (JniInchiStructure) jniInchiOutputStructure;
-			JniInchiInput jniInchiInput = new JniInchiInput(jniInchiStructure);
+			JniInchiInput jniInchiInput = new JniInchiInput(jniInchiOutputStructure);
 			JniInchiOutput output = JniInchiWrapper.getStdInchi(jniInchiInput);
 			standardInchi = output.getInchi();
 
