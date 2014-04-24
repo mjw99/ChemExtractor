@@ -35,7 +35,7 @@ public class OscarPDFTest {
 		PrintWriter writer = null;
 		
 		try {
-			writer = new PrintWriter("example.json", "UTF-8");
+			writer = new PrintWriter("US8680279.json", "UTF-8");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
