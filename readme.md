@@ -17,6 +17,12 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 
 # Examples
 
+## Extract chemical data from a single pdf
+
+    $ cd /tmp
+    $ wget http://patentimages.storage.googleapis.com/pdfs/US20110000125.pdf
+    $ oscarpdf2json -i US20110000125.pdf > US20110000125.json
+
 ## Extract chemical data from multiple pdfs
    
     $ cd src/test/resources/name/mjw/chemextractor/chem_sample_patents
