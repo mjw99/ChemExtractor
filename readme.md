@@ -26,4 +26,4 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 ## Extract chemical data from multiple pdfs
    
     $ cd src/test/resources/name/mjw/chemextractor/chem_sample_patents
-    $ ls *.pdf | xargs -I {} oscarpdf2json -i {} >> /tmp/foo.json
+    $ ls *.pdf | xargs -I{} sh -c "oscarpdf2json -i '{}' > '/tmp/{}.json'"
