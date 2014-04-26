@@ -128,11 +128,11 @@ public class OscarPDF2JSON {
 
 				// Can we do this in another way?
 				// i.e. return CML from ChemicalDatum via translation from InChI?
-				ChemicalStructure cml = ne
-						.getFirstChemicalStructure(FormatType.CML);
-				if (cml != null) {
-					cd.setCml(cml.getValue());
-				}
+//				ChemicalStructure cml = ne
+//						.getFirstChemicalStructure(FormatType.CML);
+//				if (cml != null) {
+//					cd.setCml(cml.getValue());
+//				}
 
 				chemicalData.put(ne.getSurface(), cd);
 			}
