@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class OscarPDF2JSON {
 	/**
 	 * Extrated text from the PDF
 	 */
-	String textWithinPDF = null;
+	String[] textLinesWithinPDF = null;
 
 	Oscar oscar = null;
 	List<ResolvedNamedEntity> entities = null;
@@ -102,8 +103,22 @@ public class OscarPDF2JSON {
 
 	}
 
+	/**
+	 * For every member of textLinesWithinPDF[], use Oscar
+	 * to find and resolved Named Entites, adding them to 
+	 * entities
+	 */
 	void generateEntities() {
-		entities = oscar.findAndResolveNamedEntities(textWithinPDF);
+
+		entities = new ArrayList<ResolvedNamedEntity>();
+
+		for (int i = 0; i < textLinesWithinPDF.length; i++) {
+
+			entities.addAll(oscar
+					.findAndResolveNamedEntities(textLinesWithinPDF[i]));
+
+		}
+
 	}
 
 	public void printInchi() {
@@ -161,7 +176,8 @@ public class OscarPDF2JSON {
 		}
 
 		try {
-			textWithinPDF = stripper.getText(doc);
+			// Split the string into lines by new line.
+			textLinesWithinPDF = stripper.getText(doc).split("\\r?\\n");
 			doc.close();
 
 		} catch (IOException e) {
