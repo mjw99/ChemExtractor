@@ -64,14 +64,17 @@ public class OscarPDF2JSON {
 		generateEntities();
 	}
 
+	/**
+	 * Populates a PdfJSON instance with ChemicalData
+	 * @return JSON String of chemicals
+	 */
 	public String getJSON() {
-		populateChemicalData();
-
 		Gson gson = new Gson();
 
 		PdfJSON pdfJSON = new PdfJSON();
 
 		pdfJSON.chemicalData = populateChemicalData();
+
 		// TODO
 		pdfJSON.setMd5Sum("abc");
 
