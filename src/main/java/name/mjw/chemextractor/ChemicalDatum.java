@@ -1,20 +1,12 @@
 package name.mjw.chemextractor;
 
-
 import net.sf.jniinchi.JniInchiException;
 import net.sf.jniinchi.JniInchiInput;
 import net.sf.jniinchi.JniInchiInputInchi;
 import net.sf.jniinchi.JniInchiOutput;
 import net.sf.jniinchi.JniInchiOutputKey;
 import net.sf.jniinchi.JniInchiOutputStructure;
-
-import net.sf.jniinchi.JniInchiStructure;
 import net.sf.jniinchi.JniInchiWrapper;
-
-
-
-
-
 
 public class ChemicalDatum {
 
@@ -53,6 +45,7 @@ public class ChemicalDatum {
 
 	/**
 	 * Converts an InChI to a Standard InChI
+	 * 
 	 * @param inchi
 	 * @return
 	 */
@@ -60,12 +53,14 @@ public class ChemicalDatum {
 
 		String standardInchi = null;
 
-
 		try {
 
-			JniInchiInputInchi jniInchiInputInchi = new JniInchiInputInchi(inchi);
-			JniInchiOutputStructure jniInchiOutputStructure = JniInchiWrapper.getStructureFromInchi(jniInchiInputInchi);
-			JniInchiInput jniInchiInput = new JniInchiInput(jniInchiOutputStructure);
+			JniInchiInputInchi jniInchiInputInchi = new JniInchiInputInchi(
+					inchi);
+			JniInchiOutputStructure jniInchiOutputStructure = JniInchiWrapper
+					.getStructureFromInchi(jniInchiInputInchi);
+			JniInchiInput jniInchiInput = new JniInchiInput(
+					jniInchiOutputStructure);
 			JniInchiOutput output = JniInchiWrapper.getStdInchi(jniInchiInput);
 			standardInchi = output.getInchi();
 
