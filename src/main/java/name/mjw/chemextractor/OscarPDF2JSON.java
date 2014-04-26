@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -28,7 +30,8 @@ import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.ResolvedNamedEntity;
  */
 public class OscarPDF2JSON {
 
-	String md5SumOfPDFFile = null;
+	//TODO
+	String md5SumOfPDFFile = "abc";
 
 	PDDocument doc = null;
 	
@@ -37,8 +40,20 @@ public class OscarPDF2JSON {
 	 */
 	String[] textLinesWithinPDF = null;
 
+	/**
+	 * Oscar4 istance for processing
+	 */
 	Oscar oscar = null;
+	
+	/**
+	 * ResolvedNamedEntity found by Oscar
+	 */
 	List<ResolvedNamedEntity> entities = null;
+	
+	/**
+	 * ChemicalData are unique as a function of name
+	 */
+	HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
 
 	
 	public OscarPDF2JSON() {
@@ -53,6 +68,9 @@ public class OscarPDF2JSON {
 		
 		// Process the text string with OSCAR
 		generateEntities();
+		
+		// Generate a unique set of chemicals from the PDF
+		this.chemicalData = populateChemicalData();
 	}
 	
 	public OscarPDF2JSON(FileInputStream is) {
@@ -62,10 +80,15 @@ public class OscarPDF2JSON {
 		
 		// Process the text string with OSCAR
 		generateEntities();
+		
+		// Generate a unique set of chemicals from the PDF
+		this.chemicalData = populateChemicalData();
 	}
 
 	/**
-	 * Populates a PdfJSON instance with ChemicalData
+	 * Creates a PdfJSON, adds ChemicalData to it and then
+	 * returns a JSON representaion of PdfJSON.
+	 * 
 	 * @return JSON String of chemicals
 	 */
 	public String getJSON() {
@@ -73,15 +96,21 @@ public class OscarPDF2JSON {
 
 		PdfJSON pdfJSON = new PdfJSON();
 
-		pdfJSON.chemicalData = populateChemicalData();
+		pdfJSON.chemicalData = chemicalData;
 
 		// TODO
-		pdfJSON.setMd5Sum("abc");
+		pdfJSON.setMd5Sum(md5SumOfPDFFile);
 
 		return gson.toJson(pdfJSON);
 
 	}
 
+	/**
+	 * Forms ChemicalData set containing unique chemical entities found in the
+	 * pdf.
+	 * 
+	 * @return chemicalData of the PDF
+	 */
 	HashMap<String, ChemicalDatum> populateChemicalData() {
 
 		HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
@@ -107,9 +136,8 @@ public class OscarPDF2JSON {
 	}
 
 	/**
-	 * For every member of textLinesWithinPDF[], use Oscar
-	 * to find and resolved Named Entites, adding them to 
-	 * entities
+	 * For every member of textLinesWithinPDF[], use Oscar to find and resolved
+	 * Named Entites, adding them to entities
 	 */
 	void generateEntities() {
 
@@ -124,33 +152,45 @@ public class OscarPDF2JSON {
 
 	}
 
-	public void printInchi() {
+	public void printStandardInChI() {
+		
+		Iterator<?> it = this.chemicalData.entrySet().iterator();
+		
+	    while (it.hasNext()) {
+	        @SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
+	        //System.out.println(pairs.getKey() + " = " + pairs.getValue().getStandardInChI());
+	        System.out.println(pairs.getValue().getStandardInChI());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }  
 
-		for (ResolvedNamedEntity ne : entities) {
+	}
+	
 
-			ChemicalStructure inchi = ne
-					.getFirstChemicalStructure(FormatType.INCHI);
+	public void printStandardInChIKeys() {
+		
+		Iterator<?> it = this.chemicalData.entrySet().iterator();
+		
+	    while (it.hasNext()) {
+	        @SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
+	        System.out.println(pairs.getValue().getStandardInchiKey());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }  
 
-			if (inchi != null) {
-
-				System.out.println(inchi.getValue());
-
-			}
-
-		}
 	}
 
 	public void printCML() {
 
-		for (ResolvedNamedEntity ne : entities) {
+		Iterator<?> it = this.chemicalData.entrySet().iterator();
+		
+	    while (it.hasNext()) {
+	        @SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
+	        System.out.println(pairs.getValue().getCml());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }  
 
-			ChemicalStructure cml = ne
-					.getFirstChemicalStructure(FormatType.CML);
-			if (cml != null) {
-				System.out.println(cml);
-			}
-
-		}
 	}
 
 	public void extractTextfromPDFFileName(String fileName) {

@@ -8,11 +8,31 @@ import net.sf.jniinchi.JniInchiOutputKey;
 import net.sf.jniinchi.JniInchiOutputStructure;
 import net.sf.jniinchi.JniInchiWrapper;
 
+/**
+ * Container class for a chemical.
+ * Also contains additional metadata pertaining to that chemical. 
+ * @author mw529
+ *
+ */
 public class ChemicalDatum {
 
+	/**
+	 * Non IUPAC informal name.
+	 * 
+	 */
 	private String name;
-	private String inchi;
-	private String inchiKey;
+	/**
+	 * @see <a href=http://en.wikipedia.org/wiki/International_Chemical_Identifier> InChI </a> 
+	 */
+	private String standardInChI;
+	/**
+	 * Hash of the Standard InChI value; use this for searching
+	 * @see <a href=http://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey> InChIKey </a> 
+	 */
+	private String standardInChIKey;
+	/**
+	 * CML form of the chemical.
+	 */
 	private String cml;
 
 	public String getName() {
@@ -23,23 +43,30 @@ public class ChemicalDatum {
 		this.name = name;
 	}
 
-	public String getInchi() {
-		return inchi;
+	public String getStandardInChI() {
+		return standardInChI;
 	}
 
+	/**
+	 * Will autmatically translate a non-standard InChI to a standard one
+	 * 
+	 * @param inchi
+	 *            non-standard InChI
+	 */
+
 	public void setInchi(final String inchi) {
-		this.inchi = inchiToStandardInchi(inchi);
+		this.standardInChI = inchiToStandardInchi(inchi);
 
 		JniInchiOutputKey key = null;
 
 		try {
-			key = JniInchiWrapper.getInchiKey(this.inchi);
+			key = JniInchiWrapper.getInchiKey(this.standardInChI);
 		} catch (JniInchiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		inchiKey = key.getKey();
+		standardInChIKey = key.getKey();
 
 	}
 
@@ -47,9 +74,10 @@ public class ChemicalDatum {
 	 * Converts an InChI to a Standard InChI
 	 * 
 	 * @param inchi
-	 * @return
+	 *            Non-standard InChI
+	 * @return Standard InChI
 	 */
-	String inchiToStandardInchi(String inchi) {
+	String inchiToStandardInchi(final String inchi) {
 
 		String standardInchi = null;
 
@@ -81,9 +109,9 @@ public class ChemicalDatum {
 		this.cml = cml;
 	}
 
-	public String getInchiKey() {
+	public String getStandardInchiKey() {
 
-		return inchiKey;
+		return standardInChIKey;
 	}
 
 }

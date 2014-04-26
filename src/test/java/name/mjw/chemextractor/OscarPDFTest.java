@@ -28,12 +28,12 @@ public class OscarPDFTest {
 
 		oscarPDF = new OscarPDF2JSON(pdfFileName);
 	}
-	
+
 	@Test
 	public void getJSONtoFile() {
 
 		PrintWriter writer = null;
-		
+
 		try {
 			writer = new PrintWriter("US8680279.json", "UTF-8");
 		} catch (FileNotFoundException e) {
@@ -44,21 +44,25 @@ public class OscarPDFTest {
 			e.printStackTrace();
 		}
 		writer.println(oscarPDF.getJSON());
-		
+
 		writer.close();
-		
-		
-		
+
 	}
 
 	@Test
-	public void getInchi() {
+	public void printStandardInChI() {
 
-		oscarPDF.printInchi();
+		oscarPDF.printStandardInChI();
 	}
 
 	@Test
-	public void getCML() {
+	public void printStandardInChIKeys() {
+
+		oscarPDF.printStandardInChIKeys();
+	}
+
+	@Test
+	public void printCML() {
 
 		oscarPDF.printCML();
 	}
