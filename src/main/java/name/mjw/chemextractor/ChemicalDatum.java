@@ -9,29 +9,50 @@ import net.sf.jniinchi.JniInchiOutputStructure;
 import net.sf.jniinchi.JniInchiWrapper;
 
 /**
- * Container class for a chemical.
- * Also contains additional metadata pertaining to that chemical. 
+ * Container class for a chemical. Also contains additional metadata pertaining
+ * to that chemical.
+ * 
  * @author mw529
- *
+ * 
  */
 public class ChemicalDatum {
 
 	/**
-	 * Non IUPAC informal name.
+	 * Non IUPAC informal name of the chemical.
 	 * 
 	 */
 	private String name;
+
 	/**
-	 * @see <a href=http://en.wikipedia.org/wiki/International_Chemical_Identifier> InChI </a> 
+	 * InChI is defined as “a series of characters derived by applying a set of
+	 * rules to a chemical structure to provide a unique digital ‘signature’ for
+	 * a compound.”
+	 * 
+	 * Standard InChI was defined to ensure interoperability/compatibility
+	 * between large databases/web searching & information exchange. It is a
+	 * subset of InChI.
+	 * 
+	 * @see <a
+	 *      href=http://en.wikipedia.org/wiki/International_Chemical_Identifier>
+	 *      InChI </a>
 	 */
 	private String standardInChI;
+
 	/**
 	 * Hash of the Standard InChI value; use this for searching
-	 * @see <a href=http://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey> InChIKey </a> 
+	 * 
+	 * @see <a
+	 *      href=http://en.wikipedia.org/wiki/International_Chemical_Identifier
+	 *      #InChIKey> InChIKey </a>
+	 * 
+	 *      The InChIKey is a fixed length SHA-256 hash of InChI (27 characters,
+	 *      including two hyphens). Its fixed length makes it easy to index and
+	 *      it is thus designed for databases and web searching.
 	 */
 	private String standardInChIKey;
+
 	/**
-	 * CML form of the chemical.
+	 * Chemical Markup Language (CML) form of the chemical.
 	 */
 	private String cml;
 
@@ -54,7 +75,7 @@ public class ChemicalDatum {
 	 *            non-standard InChI
 	 */
 
-	public void setInchi(final String inchi) {
+	public void setStandardInChIFromInChI(final String inchi) {
 		this.standardInChI = inchiToStandardInchi(inchi);
 
 		JniInchiOutputKey key = null;
