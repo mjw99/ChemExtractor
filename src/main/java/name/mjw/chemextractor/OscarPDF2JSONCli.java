@@ -12,7 +12,7 @@ import joptsimple.OptionSet;
 
 public class OscarPDF2JSONCli {
 
-	private final static String NAME = "OscarPDF2JSONCli";
+	private final static String NAME = "OscarPDF2JSON";
 
 	private final static String TITLE = NAME
 			+ " - A tool for extracting Chemical terms from a PDF";
