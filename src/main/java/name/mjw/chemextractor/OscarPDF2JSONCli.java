@@ -97,7 +97,7 @@ public class OscarPDF2JSONCli {
 			{
 				acceptsAll(asList("i", "inputPDFFileName"),
 						"the input PDF file to be processed")
-						.withRequiredArg().ofType(String.class).isRequired();
+						.withRequiredArg().ofType(String.class).required();
 
 
 				acceptsAll(asList("h", "?", "help"), "display this output");
