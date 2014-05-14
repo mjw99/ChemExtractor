@@ -1,10 +1,14 @@
 package name.mjw.chemextractor;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.google.gson.Gson;
 
 
 import joptsimple.OptionParser;
@@ -19,13 +23,13 @@ public class OscarPDF2JSONCli {
 	
 	private final static String EXAMPLE = "  "
 			+ NAME.toLowerCase()
-			+ " -i foo.pdf "
+			+ " foo.pdf bar.pdf "
 			+ "\n";
 	
 	
 	private static OptionParser optionParser = null;
 	
-	private static String inputPDFFileName;
+	private static List<File> inputPDFFiles;
 	
 	private static OscarPDF2JSON oscarPDF2JSON = null;
 
@@ -35,20 +39,33 @@ public class OscarPDF2JSONCli {
 		// Populate the internal state of the object as directed by the command
 		// line options
 		parseArguments(args);
-		
-		
+
+		oscarPDF2JSON = new OscarPDF2JSON();
+
 		FileInputStream inputStream = null;
+				
+		List<PdfJSON> pdfJSONs = new ArrayList<PdfJSON>();
+		
 		try {
-			inputStream = new FileInputStream(inputPDFFileName);
+			for (File inputPDFFile : inputPDFFiles) {
+
+				inputStream = new FileInputStream(inputPDFFile);
+
+				oscarPDF2JSON.processfromPDFStream(inputStream);
+				
+				pdfJSONs.add(oscarPDF2JSON.getPdfJSON());
+
+			}
+
 		} catch (FileNotFoundException e) {
-			System.out.println("Cannot open file" + inputPDFFileName);
+			System.out.println("Cannot open file" + inputPDFFiles);
 			e.printStackTrace();
 		}
-				
-		oscarPDF2JSON = new OscarPDF2JSON(inputStream);
-		System.out.println(oscarPDF2JSON.getJSON());	
 		
+		Gson gson = new Gson();
 		
+		System.out.println(gson.toJson(pdfJSONs));
+
 	}
 	
 
@@ -83,30 +100,26 @@ public class OscarPDF2JSONCli {
 			System.exit(0);
 		}
 		
-		inputPDFFileName = (String) optionSet.valueOf("i");
+		inputPDFFiles = (List<File>) optionSet.nonOptionArguments();
 
 	}
-	
+
 	/**
 	 * Sets up all the valid options for this command
 	 * 
 	 * @return OptionParser valid options
 	 */
 	private static OptionParser getOptionParser() {
-		return new OptionParser() {
-			{
-				acceptsAll(asList("i", "inputPDFFileName"),
-						"the input PDF file to be processed")
-						.withRequiredArg().ofType(String.class).required();
 
+		OptionParser parser = new OptionParser();
 
-				acceptsAll(asList("h", "?", "help"), "display this output");
+		parser.nonOptions("PDF File(s) to be processed").ofType(File.class);
 
-			}
-		};
+		parser.acceptsAll(asList("h", "?", "help"), "display this output");
+
+		return parser;
 
 	}
-
 	
 	
 	

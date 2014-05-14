@@ -76,7 +76,7 @@ public class OscarPDFTest {
 							"/name/mjw/chemextractor/US8680279.pdf").getFile(),
 					"utf-8");
 
-			OscarPDF2JSON oscarPDF = new OscarPDF2JSON();
+			OscarPDF2JSON oscarPDF = new OscarPDF2JSON(pdfFileName);
 
 			System.out.println(oscarPDF.getMd5Sum(pdfFileName));
 

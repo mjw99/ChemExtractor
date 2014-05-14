@@ -3,6 +3,11 @@ package name.mjw.chemextractor;
 
 import java.util.HashMap;
 
+/**
+ * Representation of a processed PDF
+ * @author mw529
+ *
+ */
 public class PdfJSON {
 
 	private String name;

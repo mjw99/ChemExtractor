@@ -30,11 +30,11 @@ import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.ResolvedNamedEntity;
  */
 public class OscarPDF2JSON {
 
-	//TODO
+	// TODO
 	String md5SumOfPDFFile = "abc";
 
 	PDDocument doc = null;
-	
+
 	/**
 	 * Extrated text from the PDF
 	 */
@@ -43,51 +43,48 @@ public class OscarPDF2JSON {
 	/**
 	 * Oscar4 istance for processing
 	 */
-	Oscar oscar = null;
-	
+	Oscar oscar = new Oscar();
+
 	/**
 	 * ResolvedNamedEntity found by Oscar
 	 */
 	List<ResolvedNamedEntity> entities = null;
-	
+
 	/**
 	 * ChemicalData are unique as a function of name
 	 */
 	HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
 
-	
 	public OscarPDF2JSON() {
-		oscar = new Oscar();
+
 	}
 
 	public OscarPDF2JSON(String pdfFileName) {
-		oscar = new Oscar();
-		
+
 		// Pull only the text out of a PDF as a String
 		extractTextfromPDFFileName(pdfFileName);
-		
+
 		// Process the text string with OSCAR
 		generateEntities();
-		
+
 		// Generate a unique set of chemicals from the PDF
 		this.chemicalData = populateChemicalData();
 	}
-	
+
 	public OscarPDF2JSON(FileInputStream is) {
-		oscar = new Oscar();
 
 		extractTextfromPDFStream(is);
-		
+
 		// Process the text string with OSCAR
 		generateEntities();
-		
+
 		// Generate a unique set of chemicals from the PDF
 		this.chemicalData = populateChemicalData();
 	}
 
 	/**
-	 * Creates a PdfJSON, adds ChemicalData to it and then
-	 * returns a JSON representaion of PdfJSON.
+	 * Creates a PdfJSON, adds ChemicalData to it and then returns a JSON
+	 * representaion of PdfJSON.
 	 * 
 	 * @return JSON String of chemicals
 	 */
@@ -102,6 +99,25 @@ public class OscarPDF2JSON {
 		pdfJSON.setMd5Sum(md5SumOfPDFFile);
 
 		return gson.toJson(pdfJSON);
+
+	}
+
+	/**
+	 * Creates a PdfJSON, adds ChemicalData to it and then returns the PdfJSON
+	 * representaion of PdfJSON.
+	 * 
+	 * @return PdfJSON
+	 */
+	public PdfJSON getPdfJSON() {
+
+		PdfJSON pdfJSON = new PdfJSON();
+
+		pdfJSON.chemicalData = chemicalData;
+
+		// TODO
+		pdfJSON.setMd5Sum(md5SumOfPDFFile);
+
+		return pdfJSON;
 
 	}
 
@@ -125,14 +141,6 @@ public class OscarPDF2JSON {
 
 				cd.setName(ne.getSurface());
 				cd.setStandardInChIFromInChI(inchi.getValue());
-
-				// Can we do this in another way?
-				// i.e. return CML from ChemicalDatum via translation from InChI?
-//				ChemicalStructure cml = ne
-//						.getFirstChemicalStructure(FormatType.CML);
-//				if (cml != null) {
-//					cd.setCml(cml.getValue());
-//				}
 
 				chemicalData.put(ne.getSurface(), cd);
 			}
@@ -161,49 +169,64 @@ public class OscarPDF2JSON {
 	}
 
 	public void printStandardInChI() {
-		
+
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
-		
-	    while (it.hasNext()) {
-	        @SuppressWarnings("unchecked")
-			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
-	        //System.out.println(pairs.getKey() + " = " + pairs.getValue().getStandardInChI());
-	        System.out.println(pairs.getValue().getStandardInChI());
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }  
+
+		while (it.hasNext()) {
+			@SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
+					.next();
+			// System.out.println(pairs.getKey() + " = " +
+			// pairs.getValue().getStandardInChI());
+			System.out.println(pairs.getValue().getStandardInChI());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
 
 	}
-	
 
 	public void printStandardInChIKeys() {
-		
+
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
-		
-	    while (it.hasNext()) {
-	        @SuppressWarnings("unchecked")
-			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
-	        System.out.println(pairs.getValue().getStandardInchiKey());
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }  
+
+		while (it.hasNext()) {
+			@SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
+					.next();
+			System.out.println(pairs.getValue().getStandardInchiKey());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
 
 	}
 
 	public void printCML() {
 
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
-		
-	    while (it.hasNext()) {
-	        @SuppressWarnings("unchecked")
-			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>)it.next();
-	        System.out.println(pairs.getValue().getCml());
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }  
+
+		while (it.hasNext()) {
+			@SuppressWarnings("unchecked")
+			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
+					.next();
+			System.out.println(pairs.getValue().getCml());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
 
 	}
 
 	public void extractTextfromPDFFileName(String fileName) {
 
 		extractTextfromPDFStream(getPDFStreamFromFileName(fileName));
+
+	}
+
+	public void processfromPDFStream(FileInputStream is) {
+
+		extractTextfromPDFStream(is);
+
+		// Process the text string with OSCAR
+		generateEntities();
+
+		// Generate a unique set of chemicals from the PDF
+		this.chemicalData = populateChemicalData();
 
 	}
 
