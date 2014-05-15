@@ -13,7 +13,7 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
     $ cd chemextractor
     $ mvn clean package ; sudo dpkg -i ./target/*.deb
     $
-    $ oscarpdf2json -i foo.pdf
+    $ oscarpdf2json foo.pdf
 
 # Examples
 
@@ -21,9 +21,9 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 
     $ cd /tmp
     $ wget http://patentimages.storage.googleapis.com/pdfs/US20110000125.pdf
-    $ oscarpdf2json -i US20110000125.pdf > US20110000125.json
+    $ oscarpdf2json US20110000125.pdf > US20110000125.json
 
 ## Extract chemical data from multiple pdfs
    
     $ cd src/test/resources/name/mjw/chemextractor/chem_sample_patents
-    $ ls *.pdf | xargs -I{} sh -c "oscarpdf2json -i '{}' > '/tmp/{}.json'"
+    $ oscarpdf2json *.pdf > all.json
