@@ -1,5 +1,7 @@
 package name.mjw.chemextractor;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -62,27 +64,9 @@ public class OscarPDFTest {
 	}
 
 	@Test
-	public void printCML() {
-
-		oscarPDF.printCML();
-	}
-
-	@Test
 	public void checkMD5Sum() {
 
-		try {
-			String pdfFileName = URLDecoder.decode(
-					getClass().getResource(
-							"/name/mjw/chemextractor/US8680279.pdf").getFile(),
-					"utf-8");
-
-			OscarPDF2JSON oscarPDF = new OscarPDF2JSON(pdfFileName);
-
-			System.out.println(oscarPDF.getMd5Sum(pdfFileName));
-
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		assertEquals("a02b9faeae2a62565b58cba85101b077", oscarPDF.getMd5Sum());
 
 	}
 

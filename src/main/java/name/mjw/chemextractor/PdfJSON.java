@@ -1,25 +1,24 @@
 package name.mjw.chemextractor;
 
-
 import java.util.HashMap;
 
 /**
- * Representation of a processed PDF
+ * A container class for a chemically processed PDF which is used to generate JSON.
+ * 
  * @author mw529
- *
+ * 
  */
 public class PdfJSON {
 
 	private String name;
-	
+
 	private String md5Sum;
-	
-	
+
 	/**
 	 * ChemicalData are unique as a function of name
 	 */
-	HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
-	
+	private HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
+
 	public String getName() {
 		return name;
 	}
@@ -35,5 +34,13 @@ public class PdfJSON {
 	public void setMd5Sum(String md5Sum) {
 		this.md5Sum = md5Sum;
 	}
-	
+
+	public HashMap<String, ChemicalDatum> getChemicalData() {
+		return chemicalData;
+	}
+
+	public void setChemicalData(HashMap<String, ChemicalDatum> chemicalData) {
+		this.chemicalData = chemicalData;
+	}
+
 }

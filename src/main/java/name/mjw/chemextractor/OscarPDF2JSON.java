@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
@@ -30,8 +33,8 @@ import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.ResolvedNamedEntity;
  */
 public class OscarPDF2JSON {
 
-	// TODO
-	String md5SumOfPDFFile = "abc";
+
+	String md5SumOfPDFFile = null;
 
 	PDDocument doc = null;
 
@@ -63,7 +66,7 @@ public class OscarPDF2JSON {
 
 		// Pull only the text out of a PDF as a String
 		extractTextfromPDFFileName(pdfFileName);
-
+		
 		// Process the text string with OSCAR
 		generateEntities();
 
@@ -93,13 +96,11 @@ public class OscarPDF2JSON {
 
 		PdfJSON pdfJSON = new PdfJSON();
 
-		pdfJSON.chemicalData = chemicalData;
+		pdfJSON.setChemicalData(chemicalData);
 
-		// TODO
-		pdfJSON.setMd5Sum(md5SumOfPDFFile);
+		pdfJSON.setMd5Sum(this.md5SumOfPDFFile);
 
 		return gson.toJson(pdfJSON);
-
 	}
 
 	/**
@@ -112,13 +113,11 @@ public class OscarPDF2JSON {
 
 		PdfJSON pdfJSON = new PdfJSON();
 
-		pdfJSON.chemicalData = chemicalData;
+		pdfJSON.setChemicalData(chemicalData);
 
-		// TODO
-		pdfJSON.setMd5Sum(md5SumOfPDFFile);
+		pdfJSON.setMd5Sum(this.md5SumOfPDFFile);
 
 		return pdfJSON;
-
 	}
 
 	/**
@@ -176,8 +175,7 @@ public class OscarPDF2JSON {
 			@SuppressWarnings("unchecked")
 			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
 					.next();
-			// System.out.println(pairs.getKey() + " = " +
-			// pairs.getValue().getStandardInChI());
+
 			System.out.println(pairs.getValue().getStandardInChI());
 			it.remove(); // avoids a ConcurrentModificationException
 		}
@@ -220,7 +218,14 @@ public class OscarPDF2JSON {
 
 	public void processfromPDFStream(FileInputStream is) {
 
+		// Extract ASCII text from PDF stream
 		extractTextfromPDFStream(is);
+
+		try {
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Process the text string with OSCAR
 		generateEntities();
@@ -230,28 +235,46 @@ public class OscarPDF2JSON {
 
 	}
 
+	/**
+	 * Populate textLinesWithinPDF[] from PDF. It will also calculate the MD5SUM
+	 * hash of the PDF.
+	 * 
+	 * @param is
+	 */
 	void extractTextfromPDFStream(FileInputStream is) {
 
-		try {
-			doc = PDDocument.load(is);
+		MessageDigest md = null;
+		PDFTextStripper stripper = null;
 
-			is.close();
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e1) {
+
+			e1.printStackTrace();
+		}
+
+		// Wrap the FileInputStream so that we can MD5SUM it
+		DigestInputStream md5Stream = new DigestInputStream(is, md);
+
+		try {
+
+			doc = PDDocument.load(md5Stream);
+
+			byte[] md5Digest = md5Stream.getMessageDigest().digest();
+			this.md5SumOfPDFFile = Hex.encodeHexString(md5Digest);
+
+			md5Stream.close();
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
-		PDFTextStripper stripper = null;
 		try {
 			stripper = new PDFTextStripper();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
 			// Split the string into lines by new line.
 			textLinesWithinPDF = stripper.getText(doc).split("\\r?\\n");
+
 			doc.close();
 
 		} catch (IOException e) {
@@ -270,7 +293,7 @@ public class OscarPDF2JSON {
 			is = new FileInputStream(file);
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -278,25 +301,10 @@ public class OscarPDF2JSON {
 
 	}
 
-	String getMd5SumFromStream(FileInputStream is) {
+	public String getMd5Sum() {
 
-		String md5Sum = null;
-		try {
-			md5Sum = DigestUtils.md5Hex(is);
-			is.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return md5Sum;
-
+		return md5SumOfPDFFile;
 	}
 
-	public String getMd5Sum(String fileName) {
-
-		return getMd5SumFromStream(getPDFStreamFromFileName(fileName));
-
-	}
 
 }
