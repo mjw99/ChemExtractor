@@ -23,12 +23,13 @@ public class OscarPDFTest {
 		String pdfFileName = null;
 
 		try {
-			pdfFileName = URLDecoder.decode(
-					OscarPDFTest.class.getResource(
-							"/name/mjw/chemextractor/chem_sample_patents/US20110004037.pdf").getFile(),
-					"utf-8");
+			pdfFileName = URLDecoder
+					.decode(OscarPDFTest.class
+							.getResource(
+									"/name/mjw/chemextractor/chem_sample_patents/US20110004037.pdf")
+							.getFile(), "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -41,12 +42,17 @@ public class OscarPDFTest {
 		PrintWriter writer = null;
 
 		try {
-			writer = new PrintWriter("US20110004037.json", "UTF-8");
+			String jsonRoot = URLDecoder.decode(
+					OscarPDFTest.class.getResource(
+							"/name/mjw/chemextractor/chem_sample_patents/")
+							.getFile(), "utf-8");
+
+			writer = new PrintWriter(jsonRoot + "US20110004037.json", "UTF-8");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		writer.println(oscarPDF.getJSON());

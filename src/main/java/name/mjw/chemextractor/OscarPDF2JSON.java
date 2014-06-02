@@ -35,14 +35,19 @@ import uk.ac.cam.ch.wwmm.oscar.chemnamedict.entities.ResolvedNamedEntity;
  */
 public class OscarPDF2JSON {
 
-
+	/**
+	 * MD5SUM hash of the PDF.
+	 */
 	String md5SumOfPDFFile = null;
 
+	/**
+	 * Core PDFBOX representation of a PDF document.
+	 */
 	PDDocument doc = null;
 
 	/**
-	 * Extracted text from the PDF, split into string array entries as a
-	 * function of new line.
+	 * All extracted text from the PDF via PDFBOX, split into string array
+	 * entries as a function of new line.
 	 */
 	String[] textLinesWithinPDF = null;
 
@@ -52,12 +57,15 @@ public class OscarPDF2JSON {
 	Oscar oscar = new Oscar();
 
 	/**
-	 * ResolvedNamedEntity found by OSCAR
+	 * ResolvedNamedEntities found by OSCAR.
 	 */
-	List<ResolvedNamedEntity> entities = null;
+	List<ResolvedNamedEntity> resolvedNamedEntities = null;
 
 	/**
-	 * ChemicalData are unique as a function of name
+	 * ChemicalData are unique as a function of name.
+	 * 
+	 * TODO; duplication can occur if two entries are the same chemicals but
+	 * have different names.
 	 */
 	HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
 
@@ -69,7 +77,7 @@ public class OscarPDF2JSON {
 
 		// Pull only the text out of a PDF as a String
 		extractTextfromPDFFileName(pdfFileName);
-		
+
 		// Process the text string with OSCAR
 		generateEntities();
 
@@ -100,7 +108,7 @@ public class OscarPDF2JSON {
 		pdfJSON.setChemicalData(chemicalData);
 
 		pdfJSON.setMd5Sum(this.md5SumOfPDFFile);
-		
+
 		Gson gson = new Gson();
 
 		return gson.toJson(pdfJSON);
@@ -133,7 +141,7 @@ public class OscarPDF2JSON {
 
 		HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
 
-		for (ResolvedNamedEntity ne : entities) {
+		for (ResolvedNamedEntity ne : resolvedNamedEntities) {
 			ChemicalStructure inchi = ne
 					.getFirstChemicalStructure(FormatType.INCHI);
 
@@ -159,11 +167,11 @@ public class OscarPDF2JSON {
 	 */
 	void generateEntities() {
 
-		entities = new ArrayList<ResolvedNamedEntity>();
+		resolvedNamedEntities = new ArrayList<ResolvedNamedEntity>();
 
 		for (int i = 0; i < textLinesWithinPDF.length; i++) {
 
-			entities.addAll(oscar
+			resolvedNamedEntities.addAll(oscar
 					.findAndResolveNamedEntities(textLinesWithinPDF[i]));
 
 		}
@@ -291,7 +299,7 @@ public class OscarPDF2JSON {
 			doc.close();
 
 		} catch (IOException e) {
-	
+
 			e.printStackTrace();
 		}
 
@@ -318,6 +326,5 @@ public class OscarPDF2JSON {
 
 		return md5SumOfPDFFile;
 	}
-
 
 }
