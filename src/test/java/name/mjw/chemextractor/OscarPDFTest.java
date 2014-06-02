@@ -7,20 +7,20 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class OscarPDFTest {
 
 	private static OscarPDF2JSON oscarPDF;
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 		String pdfFileName = null;
 
 		try {
 			pdfFileName = URLDecoder.decode(
-					getClass().getResource(
+					OscarPDFTest.class.getResource(
 							"/name/mjw/chemextractor/US8680279.pdf").getFile(),
 					"utf-8");
 		} catch (UnsupportedEncodingException e) {
