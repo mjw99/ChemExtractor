@@ -9,9 +9,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -168,32 +170,38 @@ public class OscarPDF2JSON {
 
 	}
 
-	public void printStandardInChI() {
+	public Set<String> getUniqueStandardInChIs() {
 
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
+		Set<String> standardInChIs = new HashSet<String>();
 
 		while (it.hasNext()) {
 			@SuppressWarnings("unchecked")
 			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
 					.next();
 
-			System.out.println(pairs.getValue().getStandardInChI());
+			standardInChIs.add(pairs.getValue().getStandardInChI());
 			it.remove(); // avoids a ConcurrentModificationException
 		}
+
+		return standardInChIs;
 
 	}
 
-	public void printStandardInChIKeys() {
+	public Set<String> getUniqueStandardInChIKeys() {
 
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
+		Set<String> standardInChIKeys = new HashSet<String>();
 
 		while (it.hasNext()) {
 			@SuppressWarnings("unchecked")
 			Map.Entry<String, ChemicalDatum> pairs = (Map.Entry<String, ChemicalDatum>) it
 					.next();
-			System.out.println(pairs.getValue().getStandardInchiKey());
+			standardInChIKeys.add(pairs.getValue().getStandardInchiKey());
+
 			it.remove(); // avoids a ConcurrentModificationException
 		}
+		return standardInChIKeys;
 
 	}
 
