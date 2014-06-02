@@ -21,7 +21,7 @@ public class OscarPDFTest {
 		try {
 			pdfFileName = URLDecoder.decode(
 					OscarPDFTest.class.getResource(
-							"/name/mjw/chemextractor/US8680279.pdf").getFile(),
+							"/name/mjw/chemextractor/chem_sample_patents/US20110004037.pdf").getFile(),
 					"utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -66,7 +66,7 @@ public class OscarPDFTest {
 	@Test
 	public void checkMD5Sum() {
 
-		assertEquals("a02b9faeae2a62565b58cba85101b077", oscarPDF.getMd5Sum());
+		assertEquals("344501ec7dbd6d351a0520e8c750e903", oscarPDF.getMd5Sum());
 
 	}
 

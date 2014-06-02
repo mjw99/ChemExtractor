@@ -39,17 +39,18 @@ public class OscarPDF2JSON {
 	PDDocument doc = null;
 
 	/**
-	 * Extrated text from the PDF
+	 * Extracted text from the PDF, split into string array entries as a
+	 * function of new line.
 	 */
 	String[] textLinesWithinPDF = null;
 
 	/**
-	 * Oscar4 istance for processing
+	 * OSCAR4 instance for processing
 	 */
 	Oscar oscar = new Oscar();
 
 	/**
-	 * ResolvedNamedEntity found by Oscar
+	 * ResolvedNamedEntity found by OSCAR
 	 */
 	List<ResolvedNamedEntity> entities = null;
 
@@ -87,25 +88,25 @@ public class OscarPDF2JSON {
 
 	/**
 	 * Creates a PdfJSON, adds ChemicalData to it and then returns a JSON
-	 * representaion of PdfJSON.
+	 * Representation of PdfJSON.
 	 * 
 	 * @return JSON String of chemicals
 	 */
 	public String getJSON() {
-		Gson gson = new Gson();
-
 		PdfJSON pdfJSON = new PdfJSON();
 
 		pdfJSON.setChemicalData(chemicalData);
 
 		pdfJSON.setMd5Sum(this.md5SumOfPDFFile);
+		
+		Gson gson = new Gson();
 
 		return gson.toJson(pdfJSON);
 	}
 
 	/**
 	 * Creates a PdfJSON, adds ChemicalData to it and then returns the PdfJSON
-	 * representaion of PdfJSON.
+	 * Representation of PdfJSON.
 	 * 
 	 * @return PdfJSON
 	 */
@@ -122,7 +123,7 @@ public class OscarPDF2JSON {
 
 	/**
 	 * Forms ChemicalData set containing unique chemical entities found in the
-	 * pdf.
+	 * PDF.
 	 * 
 	 * @return chemicalData of the PDF
 	 */
@@ -151,8 +152,8 @@ public class OscarPDF2JSON {
 	}
 
 	/**
-	 * For every member of textLinesWithinPDF[], use Oscar to find and resolved
-	 * Named Entites, adding them to entities
+	 * For every member of textLinesWithinPDF[], use OSCAR to find and resolved
+	 * Named Entities, adding them to entities
 	 */
 	void generateEntities() {
 
@@ -236,8 +237,11 @@ public class OscarPDF2JSON {
 	}
 
 	/**
-	 * Populate textLinesWithinPDF[] from PDF. It will also calculate the MD5SUM
-	 * hash of the PDF.
+	 * Populate textLinesWithinPDF[] from the entire text in the PDF. This
+	 * string array is split by new line. This essentially is a chunking method
+	 * to allow OSCAR to work on small pieces.
+	 * 
+	 * It will also calculate the MD5SUM hash of the PDF.
 	 * 
 	 * @param is
 	 */
@@ -273,12 +277,13 @@ public class OscarPDF2JSON {
 		try {
 			stripper = new PDFTextStripper();
 			// Split the string into lines by new line.
+			// TODO this needs to be done by paragraph...
 			textLinesWithinPDF = stripper.getText(doc).split("\\r?\\n");
 
 			doc.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
 
