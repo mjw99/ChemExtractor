@@ -1,13 +1,5 @@
 package name.mjw.chemextractor;
 
-import net.sf.jniinchi.JniInchiException;
-import net.sf.jniinchi.JniInchiInput;
-import net.sf.jniinchi.JniInchiInputInchi;
-import net.sf.jniinchi.JniInchiOutput;
-import net.sf.jniinchi.JniInchiOutputKey;
-import net.sf.jniinchi.JniInchiOutputStructure;
-import net.sf.jniinchi.JniInchiWrapper;
-
 /**
  * Container class for a chemical. Also contains additional metadata pertaining
  * to that chemical.
@@ -69,56 +61,26 @@ public class ChemicalDatum {
 	}
 
 	/**
-	 * Will autmatically translate a non-standard InChI to a standard one
+	 * Sets the standard InChI value.
 	 * 
-	 * @param inchi
-	 *            non-standard InChI
+	 * @param stdInchi
+	 *            Standard InChI
 	 */
+	public void setStandardInChI(final String stdInchi) {
 
-	public void setStandardInChIFromInChI(final String inchi) {
-		this.standardInChI = inchiToStandardInchi(inchi);
-
-		JniInchiOutputKey key = null;
-
-		try {
-			key = JniInchiWrapper.getInchiKey(this.standardInChI);
-		} catch (JniInchiException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		standardInChIKey = key.getKey();
+		this.standardInChI = stdInchi;
 
 	}
-
+	
 	/**
-	 * Converts an InChI to a Standard InChI
+	 * Sets the standard InChI value.
 	 * 
-	 * @param inchi
-	 *            Non-standard InChI
-	 * @return Standard InChI
+	 * @param stdInchi
+	 *            Standard InChI
 	 */
-	String inchiToStandardInchi(final String inchi) {
+	public void setStandardInChIKey(final String stdInchIKey) {
 
-		String standardInchi = null;
-
-		try {
-
-			JniInchiInputInchi jniInchiInputInchi = new JniInchiInputInchi(
-					inchi);
-			JniInchiOutputStructure jniInchiOutputStructure = JniInchiWrapper
-					.getStructureFromInchi(jniInchiInputInchi);
-			JniInchiInput jniInchiInput = new JniInchiInput(
-					jniInchiOutputStructure);
-			JniInchiOutput output = JniInchiWrapper.getStdInchi(jniInchiInput);
-			standardInchi = output.getInchi();
-
-		} catch (JniInchiException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return standardInchi;
+		this.standardInChIKey = stdInchIKey;
 
 	}
 

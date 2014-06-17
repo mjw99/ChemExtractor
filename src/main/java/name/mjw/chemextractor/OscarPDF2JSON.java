@@ -142,16 +142,16 @@ public class OscarPDF2JSON {
 		HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
 
 		for (ResolvedNamedEntity ne : resolvedNamedEntities) {
-			ChemicalStructure inchi = ne
-					.getFirstChemicalStructure(FormatType.INCHI);
+			ChemicalStructure stdInchi = ne.getFirstChemicalStructure(FormatType.STD_INCHI);
+			ChemicalStructure stdInchIKey = ne.getFirstChemicalStructure(FormatType.STD_INCHI_KEY);
 
-			if (inchi != null) {
+			if (stdInchi != null) {
 
 				ChemicalDatum cd = new ChemicalDatum();
 
 				cd.setName(ne.getSurface());
-				cd.setStandardInChIFromInChI(inchi.getValue());
-
+				cd.setStandardInChI(stdInchi.getValue());
+				cd.setStandardInChIKey(stdInchIKey.getValue());
 				chemicalData.put(ne.getSurface(), cd);
 			}
 
