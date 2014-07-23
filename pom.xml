@@ -16,7 +16,7 @@
 
 		<maven.min-version>3.0.4</maven.min-version>
 		<junit.version>4.11</junit.version>
-		<pdfbox.version>1.8.5</pdfbox.version>
+		<pdfbox.version>1.8.6</pdfbox.version>
 		<oscar.version>4.2.2</oscar.version>
 		<codec.version>1.8</codec.version>
 		<gson.version>2.2.4</gson.version>
