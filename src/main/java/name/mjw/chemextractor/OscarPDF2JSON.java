@@ -17,7 +17,7 @@ import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import com.google.gson.Gson;
 
