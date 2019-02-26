@@ -67,7 +67,7 @@ public class OscarPDF2JSON {
 	 * TODO; duplication can occur if two entries are the same chemicals but
 	 * have different names.
 	 */
-	HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
+	HashMap<String, ChemicalDatum> chemicalData = new HashMap<>();
 
 	public OscarPDF2JSON() {
 
@@ -139,7 +139,7 @@ public class OscarPDF2JSON {
 	 */
 	HashMap<String, ChemicalDatum> populateChemicalData() {
 
-		HashMap<String, ChemicalDatum> chemicalData = new HashMap<String, ChemicalDatum>();
+		HashMap<String, ChemicalDatum> chemicalData = new HashMap<>();
 
 		for (ResolvedNamedEntity ne : resolvedNamedEntities) {
 			ChemicalStructure stdInchi = ne.getFirstChemicalStructure(FormatType.STD_INCHI);
@@ -167,7 +167,7 @@ public class OscarPDF2JSON {
 	 */
 	void generateEntities() {
 
-		resolvedNamedEntities = new ArrayList<ResolvedNamedEntity>();
+		resolvedNamedEntities = new ArrayList<>();
 
 		for (int i = 0; i < textLinesWithinPDF.length; i++) {
 
@@ -181,7 +181,7 @@ public class OscarPDF2JSON {
 	public Set<String> getUniqueStandardInChIs() {
 
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
-		Set<String> standardInChIs = new HashSet<String>();
+		Set<String> standardInChIs = new HashSet<>();
 
 		while (it.hasNext()) {
 			@SuppressWarnings("unchecked")
@@ -199,7 +199,7 @@ public class OscarPDF2JSON {
 	public Set<String> getUniqueStandardInChIKeys() {
 
 		Iterator<?> it = this.chemicalData.entrySet().iterator();
-		Set<String> standardInChIKeys = new HashSet<String>();
+		Set<String> standardInChIKeys = new HashSet<>();
 
 		while (it.hasNext()) {
 			@SuppressWarnings("unchecked")

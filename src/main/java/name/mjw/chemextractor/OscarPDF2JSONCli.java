@@ -16,12 +16,12 @@ import joptsimple.OptionSet;
 
 public class OscarPDF2JSONCli {
 
-	private final static String NAME = "OscarPDF2JSON";
+	private static final String NAME = "OscarPDF2JSON";
 
-	private final static String TITLE = NAME
+	private static final String TITLE = NAME
 			+ " - A tool for extracting Chemical terms from a PDF";
 	
-	private final static String EXAMPLE = "  "
+	private static final String EXAMPLE = "  "
 			+ NAME.toLowerCase()
 			+ " foo.pdf bar.pdf "
 			+ "\n";
@@ -44,7 +44,7 @@ public class OscarPDF2JSONCli {
 
 		FileInputStream inputStream = null;
 				
-		List<PdfJSON> pdfJSONs = new ArrayList<PdfJSON>();
+		List<PdfJSON> pdfJSONs = new ArrayList<>();
 		
 		try {
 			for (File inputPDFFile : inputPDFFiles) {
