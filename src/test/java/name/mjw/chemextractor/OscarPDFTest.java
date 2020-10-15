@@ -79,7 +79,8 @@ public class OscarPDFTest {
 						"InChI=1S/H2O/h1H2",
 						"InChI=1S/C8H10/c1-2-8-6-4-3-5-7-8/h3-7H,2H2,1H3",
 						"InChI=1S/O",
-						"InChI=1S/C7H8/c1-7-5-3-2-4-6-7/h2-6H,1H3"
+						"InChI=1S/C7H8/c1-7-5-3-2-4-6-7/h2-6H,1H3",
+						"InChI=1S/Fe.O/q+2;-2"
 		));
 
 		Set<String> results = oscarPDF.getUniqueStandardInChIs();
@@ -90,7 +91,6 @@ public class OscarPDFTest {
 		assertEquals(expectedResults, results);
 
 	}
-
 	@Test
 	public void getUniqueStandardInChIKeys() {
 
@@ -99,6 +99,7 @@ public class OscarPDFTest {
 				"ISWSIDIOOBJBQZ-UHFFFAOYSA-N",
 				"IJDNQMDRQITEOD-UHFFFAOYSA-N",
 				"UEXCJVNBTNXOEH-UHFFFAOYSA-N",
+				"VBMVTYDPPZVILR-UHFFFAOYSA-N",
 				"XLYOFNOQVPJJNP-UHFFFAOYSA-N",
 				"HUMNYLRZRPPJDN-UHFFFAOYSA-N",
 				"YXFVVABEGXRONW-UHFFFAOYSA-N",
