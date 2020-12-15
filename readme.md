@@ -1,6 +1,6 @@
 # Chemextractor
 
-A mini proof of concept example that uses [OSCAR4](https://github.com/BlueObelisk/oscar4/) to extract chemical terms from a PDF and return them in an ad-hoc JSON format. Currently, it will return the Chemicals in standard [InChI](http://en.wikipedia.org/wiki/International_Chemical_Identifier) and standard [InChIKeys](http://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey) format. These can be resolved at the RSC resolver [here](http://www.chemspider.com/inchi-resolver/Resolver.aspx).
+A mini proof of concept example that uses [OSCAR4](https://github.com/BlueObelisk/oscar4/) to extract chemical terms from a PDF and return them in an ad-hoc JSON format. Currently, it will return the Chemicals in standard [InChI](http://en.wikipedia.org/wiki/International_Chemical_Identifier) and standard [InChIKeys](http://en.wikipedia.org/wiki/International_Chemical_Identifier#InChIKey) format. These can be resolved with the [RSC ChemSpider](http://www.chemspider.com/) tool.
 
 # Quick Start
 
