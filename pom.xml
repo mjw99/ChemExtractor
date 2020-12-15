@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>chemextractor</name>
-	<url>https://bitbucket.org/mjw99/chemextractor</url>
+	<url>https://github.com/mjw99/ChemExtractor</url>
 	<description>chemextractor is an OSCAR4 wrapper for extracting chemical data from PDFs in a JSON format.</description>
 
 	<properties>
@@ -28,16 +28,12 @@
 
 	<developers>
 		<developer>
-			<id>mjw99</id>
-			<name>Mark J. Williamson</name>
-			<email>mjw@mjw.name</email>
-			<url>http://www-ucc.ch.cam.ac.uk/members/mw529</url>
-			<organization>The Unilever Centre for Molecular Informatics </organization>
-			<organizationUrl>http://www-ucc.ch.cam.ac.uk/</organizationUrl>
-			<roles>
-				<role>Founder</role>
-				<role>Java Developer</role>
-			</roles>
+                        <id>mjw99</id>
+                        <name>Mark J. Williamson</name>
+                        <email>mjw@mjw.name</email>
+                        <url>http://www.ch.cam.ac.uk/person/mw529</url>
+                        <organization>Cambridge University</organization>
+                        <organizationUrl>http://www.cam.ac.uk</organizationUrl>
 			<timezone>0</timezone>
 		</developer>
 	</developers>
@@ -51,8 +47,8 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://bitbucket.org/mjw99/chemextractor</connection>
-		<url>https://bitbucket.org/mjw99/chemextractor</url>
+		<connection>scm:git:https://github.com/mjw99/ChemExtractor</connection>
+		<url>https://github.com/mjw99/ChemExtractor</url>
 	</scm>
 
 	<prerequisites>
