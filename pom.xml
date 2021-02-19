@@ -108,8 +108,9 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
-					<descriptor>src/main/assembly/bin.xml</descriptor>
-
+					<descriptors>
+						<descriptor>src/main/assembly/bin.xml</descriptor>
+					</descriptors>
 				</configuration>
 				<executions>
 					<execution>
