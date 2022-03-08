@@ -8,7 +8,7 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 
 ## [Debian Wheezy](http://www.debian.org/releases/wheezy/) / [Ubuntu Precise](http://releases.ubuntu.com/precise/)
 
-    $ sudo apt-get install git maven openjdk-7-jdk
+    $ sudo apt-get install git maven openjdk-8-jdk
     $ git clone https://github.com/mjw99/ChemExtractor
     $ cd ChemExtractor ; mvn clean package ; sudo dpkg -i ./target/*.deb
     $
