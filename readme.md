@@ -8,7 +8,7 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 
 ## [Debian Bullseye](https://www.debian.org/releases/bullseye/)
 
-    $ sudo apt-get install git maven openjdk-17-jdk
+    $ sudo apt-get install git maven openjdk-11-jdk
     $ git clone https://github.com/mjw99/ChemExtractor
     $ cd ChemExtractor ; mvn clean package ; sudo dpkg -i ./target/*.deb
     $
