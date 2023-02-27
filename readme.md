@@ -6,9 +6,9 @@ A mini proof of concept example that uses [OSCAR4](https://github.com/BlueObelis
 
 This will compile and install the command line tool (oscarpdf2jsoncli) to the Debian based OS.
 
-## [Debian Wheezy](http://www.debian.org/releases/wheezy/) / [Ubuntu Precise](http://releases.ubuntu.com/precise/)
+## [Debian Bullseye](https://www.debian.org/releases/bullseye/)
 
-    $ sudo apt-get install git maven openjdk-8-jdk
+    $ sudo apt-get install git maven openjdk-17-jdk
     $ git clone https://github.com/mjw99/ChemExtractor
     $ cd ChemExtractor ; mvn clean package ; sudo dpkg -i ./target/*.deb
     $
