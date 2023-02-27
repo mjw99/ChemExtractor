@@ -10,7 +10,7 @@ This will compile and install the command line tool (oscarpdf2jsoncli) to the De
 
     $ sudo apt-get install git maven openjdk-11-jdk
     $ git clone https://github.com/mjw99/ChemExtractor
-    $ cd ChemExtractor ; mvn clean package ; sudo dpkg -i ./target/*.deb
+    $ cd ChemExtractor && mvn clean package && sudo dpkg -i ./target/*.deb
     $
     $ oscarpdf2json foo.pdf
 
