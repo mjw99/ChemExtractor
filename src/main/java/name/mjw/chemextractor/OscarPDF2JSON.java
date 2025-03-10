@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -278,7 +280,7 @@ public class OscarPDF2JSON {
 
 		try {
 
-			doc = PDDocument.load(dis);
+			doc = Loader.loadPDF(IOUtils.toByteArray(dis));
 
 			byte[] md5Digest = dis.getMessageDigest().digest();
 			this.md5SumOfPDFFile = Hex.encodeHexString(md5Digest);
