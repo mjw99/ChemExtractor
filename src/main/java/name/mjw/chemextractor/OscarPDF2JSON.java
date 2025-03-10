@@ -274,16 +274,16 @@ public class OscarPDF2JSON {
 		}
 
 		// Wrap the FileInputStream so that we can MD5SUM it
-		DigestInputStream md5Stream = new DigestInputStream(is, md);
+		DigestInputStream dis = new DigestInputStream(is, md);
 
 		try {
 
-			doc = PDDocument.load(md5Stream);
+			doc = PDDocument.load(dis);
 
-			byte[] md5Digest = md5Stream.getMessageDigest().digest();
+			byte[] md5Digest = dis.getMessageDigest().digest();
 			this.md5SumOfPDFFile = Hex.encodeHexString(md5Digest);
 
-			md5Stream.close();
+			dis.close();
 
 		} catch (IOException e) {
 
